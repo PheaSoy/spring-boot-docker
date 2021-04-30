@@ -1,6 +1,15 @@
 # Spring Boot Docker and Docker Swarm
-## Building 
-### Building image from traditional 
+## Building docker image
+### Building image from traditional
+Adding this to Dockerfile
+```bash
+FROM adoptopenjdk/openjdk11:ubi
+EXPOSE 8080
+ARG JAR_FILE=target/spring-boot-docker-swarm-0.0.1.jar
+ADD ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","-jar","/app.jar"]
+
+```
 ```bash
 docker build . -t boot-greeting:0.0.1
 ````
@@ -18,4 +27,3 @@ So now let parse this configuration from docker env.
 ```bash
 $ docker run -p 8080:8080 -e "greeting.message=docker running env"  -t boot-greeting:0.0.1
 ```
-# spring-boot-docker
