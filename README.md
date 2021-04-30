@@ -34,3 +34,32 @@ Result
 ```text
 Hello World from docker running env
 ```
+
+## Container Image Registry
+### Setup docker-registry
+```bash
+ docker run -d \
+  -p 5000:5000 \
+  --restart=always \
+  --name registry \
+  -v /Users/soyphea/Documents/data/docker-registry/:/var/lib/registry \
+  registry:2
+```
+### Pushing to container registry
+Tag the container image for pushing to local container registry
+```bash
+docker tag boot-greeting:0.0.1 localhost:5000/greet-boot
+```
+Pushing image to local registry
+```bash
+docker push localhost:5000/greet-boot
+```
+### Running the container from container image in registry
+```bash
+docker run -p 8080:8080 -e "greeting.message=docker running env"  -t localhost:5000/greet-boot
+```
+### Running in docker swarm 
+Create service for docker swarm
+```bash
+ docker service create --name boot-greeting-swarm --publish 8080:8080 localhost:5000/greet-boot
+```
