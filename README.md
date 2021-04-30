@@ -27,3 +27,10 @@ So now let parse this configuration from docker env.
 ```bash
 $ docker run -p 8080:8080 -e "greeting.message=docker running env"  -t boot-greeting:0.0.1
 ```
+```bash
+curl http://localhost:8080/greeting 
+```
+Result
+```text
+Hello World from docker running env
+```
