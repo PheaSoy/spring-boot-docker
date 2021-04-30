@@ -38,7 +38,7 @@ Hello World from docker running env
 ## Container Image Registry
 ### Setup docker-registry
 ```bash
- docker run -d \
+ $ docker run -d \
   -p 5000:5000 \
   --restart=always \
   --name registry \
@@ -49,18 +49,45 @@ Please note this path `/Users/soyphea/Documents/data/docker-registry/` is bindin
 ### Pushing to container registry
 Tag the container image for pushing to local container registry
 ```bash
-docker tag boot-greeting:0.0.1 localhost:5000/greet-boot
+$ docker tag boot-greeting:0.0.1 localhost:5000/greet-boot
 ```
 Pushing image to local registry
 ```bash
-docker push localhost:5000/greet-boot
+$ docker push localhost:5000/greet-boot
 ```
 ### Running the container from container image in registry
 ```bash
-docker run -p 8080:8080 -e "greeting.message=docker running env"  -t localhost:5000/greet-boot
+$ docker run -p 8080:8080 -e "greeting.message=docker running env"  -t localhost:5000/greet-boot
 ```
 ### Running in docker swarm 
 Create service for docker swarm
 ```bash
- docker service create --name boot-greeting-swarm --publish 8080:8080 localhost:5000/greet-boot
+$ docker service create --name boot-greeting-swarm --publish 8080:8080 localhost:5000/greet-boot
+```
+Scaling the service 
+```bash
+$ docker service scale boot-greeting-swarm=5
+```
+Listing the service
+
+```bash
+$ docker service ls
+```
+Result => 
+```bash
+ID             NAME                  MODE         REPLICAS   IMAGE                              PORTS
+uxst1xujm7th   boot-greeting-swarm   replicated   5/5        localhost:5000/greet-boot:latest   *:8080->8080/tcp
+```
+List all the task for a service
+```bash
+$ docker service ps  boot-greeting-swarm
+```
+Result => 
+```bash
+ID             NAME                    IMAGE                              NODE             DESIRED STATE   CURRENT STATE                ERROR     PORTS
+tec1dtu6ia95   boot-greeting-swarm.1   localhost:5000/greet-boot:latest   docker-desktop   Running         Running 4 minutes ago                  
+s5o459t6fb6r   boot-greeting-swarm.2   localhost:5000/greet-boot:latest   docker-desktop   Running         Running 4 minutes ago                  
+yqqamjto12f6   boot-greeting-swarm.3   localhost:5000/greet-boot:latest   docker-desktop   Running         Running about a minute ago             
+mk226ba5ua6p   boot-greeting-swarm.4   localhost:5000/greet-boot:latest   docker-desktop   Running         Running about a minute ago             
+08vga417upd7   boot-greeting-swarm.5   localhost:5000/greet-boot:latest   docker-desktop   Running         Running about a minute ago 
 ```
