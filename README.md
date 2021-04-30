@@ -45,6 +45,7 @@ Hello World from docker running env
   -v /Users/soyphea/Documents/data/docker-registry/:/var/lib/registry \
   registry:2
 ```
+Please note this path `/Users/soyphea/Documents/data/docker-registry/` is binding to /var/lib/registry for the docker to prevent the lost of data
 ### Pushing to container registry
 Tag the container image for pushing to local container registry
 ```bash
