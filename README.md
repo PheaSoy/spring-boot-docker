@@ -102,3 +102,14 @@ yqqamjto12f6   boot-greeting-swarm.3   localhost:5000/greet-boot:latest   docker
 mk226ba5ua6p   boot-greeting-swarm.4   localhost:5000/greet-boot:latest   docker-desktop   Running         Running about a minute ago             
 08vga417upd7   boot-greeting-swarm.5   localhost:5000/greet-boot:latest   docker-desktop   Running         Running about a minute ago 
 ```
+
+### Update the service
+```bash
+docker service update --image localhost:5000/greeting-boot:0.0.3  boot-greeting-swarmç
+```
+
+### Using delay update for zero downtime 
+`--update-delay 10s` this will tell swarm to delay 10 seconds before it is going to update another task.
+```bash
+docker service update  --update-delay 10s --image localhost:5000/greeting-boot:0.0.3  boot-greeting-swarm
+```

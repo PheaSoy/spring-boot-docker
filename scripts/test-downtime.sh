@@ -1,0 +1,1 @@
+while true; do sleep 0.2; clear;  ruby ruby-test-downtime.rb >> log.file; done
