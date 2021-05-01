@@ -59,7 +59,18 @@ $ docker push localhost:5000/greet-boot
 ```bash
 $ docker run -p 8080:8080 -e "greeting.message=docker running env"  -t localhost:5000/greet-boot
 ```
-### Running in docker swarm 
+
+## Docker and Spring Boot environment variable
+`-e SPRING_PROFILES_ACTIVE=local` this spring will use `local`as profile
+```bash
+docker run -e SPRING_PROFILES_ACTIVE=local -p 8080:8080 boot-greeting:0.0.3
+```
+### Environment from file
+`--env-file application-docker.properties` this spring will use this file as variable environment
+```bash
+docker run --env-file application-docker.properties -p 8080:8080 boot-greeting:0.0.2
+```
+## Running in docker swarm 
 Create service for docker swarm
 ```bash
 $ docker service create --name boot-greeting-swarm --publish 8080:8080 localhost:5000/greet-boot
