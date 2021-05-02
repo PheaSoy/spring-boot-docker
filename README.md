@@ -118,3 +118,7 @@ $ docker service update  --update-delay 10s --image localhost:5000/greeting-boot
 ```bash
 $ docker service rollback  boot-greeting-swarm
 ```
+### Specific schedule the task on the node 
+```bash
+docker service create --name boot-greeting-swarm --publish 8080:8080  --constraint node.hostname==docker-desktop localhost:5000/greet-boot
+```
