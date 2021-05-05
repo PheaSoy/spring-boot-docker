@@ -122,3 +122,30 @@ $ docker service rollback  boot-greeting-swarm
 ```bash
 docker service create --name boot-greeting-swarm --publish 8080:8080  --constraint node.hostname==docker-desktop localhost:5000/greet-boot
 ```
+### Container health checking
+Adding a controller for health testing purpose
+```java
+    @GetMapping("/health/{status}")
+    ResponseEntity<String> health(@PathVariable("status") String status) {
+        if (status.equalsIgnoreCase("ok")) {
+            return ResponseEntity.status(200).body("I am still alive");
+        } else {
+            return ResponseEntity.status(500).body("I am not ok");
+        }
+```
+This endpoint `/health/status` will accept a status String response. if string is equal ok, will return alive otherwise return not ok with status code 500.
+
+#### Unhealthy checking
+This will be unhealthy, since we run command check `--health-cmd "curl -sS 127.0.0.1:8080/health/die | grep alive || exit 1"`
+
+```bas
+docker service create --name boot-greeting-swarm --publish 8080:8080 --health-cmd "curl -sS 127.0.0.1:8080/health/die | grep alive || exit 1" localhost:5000/greet-boot:0.0.4
+```
+
+#### Healthy checking 
+This will be healthy, since we run command check `--health-cmd "curl -sS 127.0.0.1:8080/health/ok | grep alive || exit 1"`
+The API will return `I am still alive` which match the condition then, swarm will consider container will be healthy.
+
+```bas
+docker service create --name boot-greeting-swarm --publish 8080:8080 --health-cmd "curl -sS 127.0.0.1:8080/health/ok | grep alive || exit 1" localhost:5000/greet-boot:0.0.4
+```
